@@ -1,12 +1,14 @@
-import os
-import json
+import tornado.ioloop
+import tornado.web
 
-from flask import Flask, render_template, send_from_directory, request, redirect, jsonify, g, \
-session, flash, url_for, abort
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write("Hello, world")
 
-from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
-from geventwebsocket.handler import WebSocketHandler
-from gevent.pywsgi import WSGIServer
+application = tornado.web.Application([
+    (r"/", MainHandler),
+])
 
-from model import Cookie, User, dbsession
-from forms import LoginForm, SignupForm
+if __name__ == "__main__":
+    application.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()
